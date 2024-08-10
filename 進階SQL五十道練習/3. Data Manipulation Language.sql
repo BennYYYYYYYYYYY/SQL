@@ -8,7 +8,7 @@ CREATE TABLE cloned_imdb.movies(
 	id int unsigned,
 	title varchar(200),
 	release_year YEAR,
-	rating float 
+	rating float DEFAULT 0
 );
 
 INSERT INTO cloned_imdb.movies (id, title, release_year, rating) VALUES
