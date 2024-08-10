@@ -1,4 +1,4 @@
-# 1. 查詢 imdb 資料庫 movies 資料表中第八至第十列的觀測值。
+# 查詢 imdb 資料庫 movies 資料表中第八至第十列的觀測值。
 
 SELECT *
  FROM imdb.movies
@@ -7,7 +7,7 @@ OFFSET 7;
 
 
 
-# 2. 查詢 covid19 資料庫 locations 資料表中第十三列至第十六列的觀測值。
+# 查詢 covid19 資料庫 locations 資料表中第十三列至第十六列的觀測值。
 
 SELECT *
  FROM covid19.locations
@@ -16,18 +16,54 @@ OFFSET 12;
 
 
 
-# 3. 查詢 imdb 資料庫 movies 資料表中於 1994 年上映的電影。
+# 查詢 imdb 資料庫 movies 資料表中於 1994 年上映的電影，並以 rating 遞減排序
 
 SELECT id,
        title,
        release_year,
        rating
  FROM imdb.movies
-WHERE release_year = 1994;
+WHERE release_year = 1994
+ORDER BY rating DESC;
 
 
 
-# 4. 查詢 covid19 資料庫 locations 資料表中台灣的資料。
+# 選取前五部電影的標題和片長，並根據片長將電影分類為"Long"（長）、"Medium"（中）或"Short"（短）
+
+SELECT title
+	   runtime,
+	   CASE WITH runtime > 180 THEN 'Long'
+	        WITH runtime BETWEEN 90 AND 180 THEN 'Medium'
+	        ELSE 'Short'
+	     END AS movie_length
+FROM imdb.movies
+LIMIT 5;
+
+
+
+# 選取id為3、14、23和25的電影的標題和上映年份，並按上映年份排序結果
+
+SELECT title,
+       release_year
+ FROM imdb.movies
+WHERE id IN (3, 14, 23, 25)
+ORDER BY release_year;
+
+
+
+
+# 選取前五部電影的標題、片長，並將片長轉換為以小時和分鐘表示的格式。
+
+SELECT title,
+ 	   runtime,
+ 	   FLOOR(runtime / 60) AS hours,   # FLOOR：將數值向下取整
+ 	   MOD(runtime, 60) AS minutes    # MOD：計算兩個數值相除後的餘數
+ FROM imdb.movies
+ LIMIT 5;
+
+
+
+# 查詢 covid19 資料庫 locations 資料表中台灣的資料。
 
 SELECT id,
        country_name,
@@ -39,7 +75,7 @@ WHERE country_name = 'Taiwan';
 
 
 
-# 5. covid19 資料庫 calendars 資料表中最小的日期與最大的日期。
+# covid19 資料庫 calendars 資料表中最小的日期與最大的日期。
 
 SELECT min(recorded_on) AS min_date,
        max(recorded_on) AS max_date
@@ -47,7 +83,7 @@ SELECT min(recorded_on) AS min_date,
 
 
 
-# 6. 查詢 imdb 資料庫 movies 資料表中最短的片長與最長的片長。
+# 查詢 imdb 資料庫 movies 資料表中最短的片長與最長的片長。
 
 SELECT min(runtime) AS min_runtime,
        max(runtime) AS max_runtime
@@ -55,7 +91,7 @@ SELECT min(runtime) AS min_runtime,
 
 
 
-# 7. 查詢 imdb 資料庫 movies 資料表中最短片長與最長片長的電影。
+# 查詢 imdb 資料庫 movies 資料表中最短片長與最長片長的電影。
 
 SELECT title,
 	   runtime
@@ -65,7 +101,7 @@ WHERE runtime = (SELECT min(runtime)FROM imdb.movies) OR
 
 
 
-# 8. covid19 資料庫 accumulative_cases 資料表中最小的日期與最大的日期。
+# covid19 資料庫 accumulative_cases 資料表中最小的日期與最大的日期。
 
 SELECT DISTINCT calendars.recorded_on AS min_max_date
  FROM covid19.accumulative_cases 
@@ -76,7 +112,7 @@ SELECT DISTINCT calendars.recorded_on AS min_max_date
 
 
 
-# 9. covid19 資料庫台灣的資料。
+# covid19 資料庫台灣的資料。
 
 SELECT locations.country_name,
        calendars.recorded_on,
@@ -91,7 +127,7 @@ SELECT locations.country_name,
 
 
 
-# 10. 查詢 imdb 資料庫 Top Gun: Maverick 的演員陣容。
+# 查詢 imdb 資料庫 Top Gun: Maverick 的演員陣容。
 
 SELECT movies.title,
        movies.release_year,
