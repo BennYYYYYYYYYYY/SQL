@@ -1,5 +1,4 @@
 # 查詢 imdb 資料庫 movies 資料表中第八至第十列的觀測值。
-
 SELECT *
  FROM imdb.movies
 LIMIT 3
@@ -8,7 +7,6 @@ OFFSET 7;
 
 
 # 查詢 covid19 資料庫 locations 資料表中第十三列至第十六列的觀測值。
-
 SELECT *
  FROM covid19.locations
 LIMIT 4
@@ -17,7 +15,6 @@ OFFSET 12;
 
 
 # 查詢 imdb 資料庫 movies 資料表中於 1994 年上映的電影，並以 rating 遞減排序
-
 SELECT id,
        title,
        release_year,
@@ -29,7 +26,6 @@ ORDER BY rating DESC;
 
 
 # 選取前五部電影的標題和片長，並根據片長將電影分類為"Long"（長）、"Medium"（中）或"Short"（短）
-
 SELECT title
 	   runtime,
 	   CASE WITH runtime > 180 THEN 'Long'
@@ -41,8 +37,15 @@ LIMIT 5;
 
 
 
-# 選取id為3、14、23和25的電影的標題和上映年份，並按上映年份排序結果
+# 查詢每個發行年份的電影平均片長，結果按發行年份分組顯示
+SELECT release_year,
+	   AVG(runtime) AS avg_runtime
+FROM imdb.movies
+GROUP BY release_year;
 
+
+
+# 選取id為3、14、23和25的電影的標題和上映年份，並按上映年份排序結果
 SELECT title,
        release_year
  FROM imdb.movies
@@ -53,7 +56,6 @@ ORDER BY release_year;
 
 
 # 選取前五部電影的標題、片長，並將片長轉換為以小時和分鐘表示的格式。
-
 SELECT title,
  	   runtime,
  	   FLOOR(runtime / 60) AS hours,   # FLOOR：將數值向下取整
@@ -64,7 +66,6 @@ SELECT title,
 
 
 # 查詢 covid19 資料庫 locations 資料表中台灣的資料。
-
 SELECT id,
        country_name,
        iso2,
@@ -76,7 +77,6 @@ WHERE country_name = 'Taiwan';
 
 
 # covid19 資料庫 calendars 資料表中最小的日期與最大的日期。
-
 SELECT min(recorded_on) AS min_date,
        max(recorded_on) AS max_date
  FROM covid19.calendars;
@@ -84,7 +84,6 @@ SELECT min(recorded_on) AS min_date,
 
 
 # 查詢 imdb 資料庫 movies 資料表中最短的片長與最長的片長。
-
 SELECT min(runtime) AS min_runtime,
        max(runtime) AS max_runtime
  FROM imdb.movies;
@@ -92,7 +91,6 @@ SELECT min(runtime) AS min_runtime,
 
 
 # 查詢 imdb 資料庫 movies 資料表中最短片長與最長片長的電影。
-
 SELECT title,
 	   runtime
 FROM imdb.movies
@@ -102,7 +100,6 @@ WHERE runtime = (SELECT min(runtime)FROM imdb.movies) OR
 
 
 # covid19 資料庫 accumulative_cases 資料表中最小的日期與最大的日期。
-
 SELECT DISTINCT calendars.recorded_on AS min_max_date
  FROM covid19.accumulative_cases 
  JOIN covid19.calendars
@@ -113,7 +110,6 @@ SELECT DISTINCT calendars.recorded_on AS min_max_date
 
 
 # covid19 資料庫台灣的資料。
-
 SELECT locations.country_name,
        calendars.recorded_on,
        accumulative_cases.confirmed,
@@ -128,7 +124,6 @@ SELECT locations.country_name,
 
 
 # 查詢 imdb 資料庫 Top Gun: Maverick 的演員陣容。
-
 SELECT movies.title,
        movies.release_year,
        actors.name,
