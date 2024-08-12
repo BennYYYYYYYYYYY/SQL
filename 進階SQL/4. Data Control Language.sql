@@ -54,7 +54,30 @@ DROP USER 'Benny'@'localhost';
 SELECT USER FROM mysql.USER;     # 查看所有 user 訊息
 
 
+# 首先建立三個角色，每個角色被分別賦予不同的資料庫權限。接著，程式碼查詢並顯示當前所有使用者。
+# 創建了三個使用者，每個使用者設置了特定的預設角色，並顯示這些使用者的權限。
+CREATE ROLE 'administrator'@'localhost',
+			'normaluser'@'localhost',
+			'poweruser'@'localhost';
+		
+SELECT USER
+FROM mysql.USER;
 
+GRANT ALL ON covid19.* TO 'administrator'@'localhost';
+GRANT SELECT ON covid19.* TO 'normaluser'@'localhost';
+GRANT SELECT, CREATE VIEW ON covid19.* TO 'poweruser'@'localhost';
+
+SHOW grants FOR 'administrator'@'localhost';
+SHOW grants FOR 'normaluser'@'localhost';
+SHOW grants FOR 'poweruser'@'localhost';
+		
+CREATE USER 'ross'@'localhost' IDENTIFIED BY 'geller' DEFAULT ROLE 'administrator'@'localhost';
+CREATE USER 'joey'@'localhost' IDENTIFIED BY 'tribbiani' DEFAULT ROLE 'normaluser'@'localhost';
+CREATE USER 'chandler'@'localhost' IDENTIFIED BY 'bing' DEFAULT ROLE 'poweruser'@'localhost';
+
+SHOW GRANTS FOR 'ross'@'localhost';
+SHOW GRANTS FOR 'joey'@'localhost';
+SHOW GRANTS FOR 'chandler'@'localhost';
 
 
 
