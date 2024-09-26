@@ -31,7 +31,7 @@ WITH votes_by_candidate AS (
          SUM(presidential.votes) AS votes
   FROM tw_election_2020.presidential
   JOIN tw_election_2020.candidates
-  ON presidential.candidate_id = candidates.id  -- 修正拼寫錯誤
+  ON presidential.candidate_id = candidates.id  
   GROUP BY candidates.id
 )
 SELECT *,
@@ -57,7 +57,7 @@ WITH votes_by_party AS (
 )
 SELECT *,
        SUM(votes) OVER () AS total_votes,
-       votes / (SUM(votes) OVER ()) AS vote_percentage  -- 修正拼寫和符號
+       votes / (SUM(votes) OVER ()) AS vote_percentage  
 FROM votes_by_party;
 
 SELECT *
@@ -91,8 +91,8 @@ CREATE VIEW covid19.daily_cases
 AS
 SELECT location_id,
        calendar_id,
-       confirmed - LAG(confirmed) OVER (PARTITION BY location_id ORDER BY calendar_id) AS confirmed,  -- 修正拼寫錯誤
-       deaths - LAG(deaths) OVER (PARTITION BY location_id ORDER BY calendar_id) AS deaths  -- 統一列名
+       confirmed - LAG(confirmed) OVER (PARTITION BY location_id ORDER BY calendar_id) AS confirmed,  
+       deaths - LAG(deaths) OVER (PARTITION BY location_id ORDER BY calendar_id) AS deaths  
 FROM covid19.accumulative_cases;
 
 SELECT count(*) 
